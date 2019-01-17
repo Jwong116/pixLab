@@ -311,6 +311,24 @@ public class Picture extends SimplePicture
       Pixel[][] pixels = this.getPixels2D();
       Pixel leftPixel = null;
       Pixel rightPixel = null;
+      int height = pixels.length;
+      int width = pixels[0].length;
+      int maxLength = 0;
+
+      if (height > width)
+          maxLength = height;
+      else
+          maxLength = width;
+
+      for (int row = 0; row < maxLength; row++)
+      {
+          for (int col = 0; col < row + 1; col++)
+          {
+              leftPixel = pixels[row][col];
+              rightPixel =
+          }
+      }
+
 
   }
   
