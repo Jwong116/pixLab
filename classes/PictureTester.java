@@ -125,7 +125,22 @@ public class PictureTester
 
   public static void testEncodeAndDecode()
   {
+      Picture original = new Picture("beach.jpg");
+      original.explore();
+      Picture message = new Picture("msg.jpg");
+      original.encode(message);
+      original.explore();
+      Picture revealed = original.decode();
+      revealed.explore();
+  }
 
+  public static void testChromakey()
+  {
+      Picture background = new Picture("beach.jpg");
+      Picture katie = new Picture("KatieFancy.jpg");
+      katie.explore();
+      katie.chromakey(background);
+      katie.explore();
   }
   
   /** Main method for testing.  Every class can have a main
@@ -154,8 +169,8 @@ public class PictureTester
     //testCopy();
     //testEdgeDetection();
     //testEdgeDetection2();
-    //testChromakey();
-    testEncodeAndDecode();
+    testChromakey();
+    //testEncodeAndDecode();
     //testGetCountRedOverValue(250);
     //testSetRedToHalfValueInTopHalf();
     //testClearBlueOverValue(200);
