@@ -133,13 +133,63 @@ public class Picture extends SimplePicture
       // loop from 13 to just before the mirror point
       for (int col = 13; col < mirrorPoint; col++)
       {
-        
+        count++;
         leftPixel = pixels[row][col];      
         rightPixel = pixels[row]                       
                          [mirrorPoint - col + mirrorPoint];
         rightPixel.setColor(leftPixel.getColor());
       }
     }
+
+    System.out.println(count);
+  }
+
+  public void mirrorArms()
+  {
+      int mirrorPoint = 194;
+      Pixel topPixel = null;
+      Pixel bottomPixel = null;
+      Pixel[][] pixels = this.getPixels2D();
+
+      for (int col = 105; col < 169; col++)
+      {
+          for (int row = 159; row < mirrorPoint; row++)
+          {
+              topPixel = pixels[row][col];
+              bottomPixel = pixels[mirrorPoint - row + mirrorPoint][col];
+              bottomPixel.setColor(topPixel.getColor());
+
+          }
+      }
+
+      for (int col = 239; col < 292; col++)
+      {
+          for (int row = 159; row < mirrorPoint; row++)
+          {
+              topPixel = pixels[row][col];
+              bottomPixel = pixels[mirrorPoint - row + mirrorPoint][col];
+              bottomPixel.setColor(topPixel.getColor());
+
+          }
+      }
+  }
+
+  public void mirrorGull()
+  {
+      int mirrorPoint = 344;
+      Pixel leftPixel = null;
+      Pixel rightPixel = null;
+      Pixel[][] pixels = this.getPixels2D();
+
+      for (int row = 234; row < 322; row++)
+      {
+          for (int col = 236; col < mirrorPoint; col++)
+          {
+              leftPixel = pixels[row][col];
+              rightPixel = pixels[row][mirrorPoint - col + mirrorPoint];
+              rightPixel.setColor(leftPixel.getColor());
+          }
+      }
   }
   
   /** copy from the passed fromPic to the
@@ -311,21 +361,15 @@ public class Picture extends SimplePicture
       Pixel[][] pixels = this.getPixels2D();
       Pixel leftPixel = null;
       Pixel rightPixel = null;
-      int height = pixels.length;
-      int width = pixels[0].length;
-      int maxLength = 0;
 
-      if (height > width)
-          maxLength = height;
-      else
-          maxLength = width;
-
-      for (int row = 0; row < maxLength; row++)
+      for (int row = 0; row < pixels.length; row++)
       {
           for (int col = 0; col < row + 1; col++)
           {
               leftPixel = pixels[row][col];
-              rightPixel =
+              rightPixel = pixels[col][row];
+              rightPixel.setColor(leftPixel.getColor());
+              leftPixel.setColor(rightPixel.getColor());
           }
       }
 
