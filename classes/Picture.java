@@ -375,6 +375,179 @@ public class Picture extends SimplePicture
 
 
   }
+
+    /** Method to replace the blue background with
+     * the pixels in the newBack picture
+     * @param newBack the picture to copy from
+     */
+    public void chromakey(Picture newBack)
+    {
+        Pixel fromPixel = null;
+        Pixel toPixel = null;
+        Pixel[][] toPixels = this.getPixels2D();
+        Pixel[][] fromPixels = newBack.getPixels2D();
+        for (int row = 0; row < this.getHeight(); row++)
+        {
+            for (int col=0; col < this.getWidth(); col++)
+            {
+                toPixel = toPixels[row][col];
+                if (toPixel.getBlue() > toPixel.getRed())
+                {
+                    fromPixel = fromPixels[row][col];
+                    toPixel.setColor(fromPixel.getColor());
+                }
+            }
+        }
+    }
+
+    /** Hide a black and white message in the current
+     * picture by changing the red to even and then
+     * setting it to odd if the message pixel is black
+     * @param messagePict the picture with a message
+     */
+    public void encode(Picture messagePict)
+    {
+
+        Pixel[][] messagePixels = messagePict.getPixels2D();
+        Pixel[][] currPixels = this.getPixels2D();
+        Pixel currPixel = null;
+        Pixel messagePixel = null;
+        int count = 0;
+        for (int row = 0; row < this.getHeight(); row++)
+        {
+            for (int col = 0; col < this.getWidth(); col++)
+            {
+                // if the current pixel red is odd make it even
+                currPixel = currPixels[row][col];
+                if (currPixel.getRed() % 2 == 1)
+                    currPixel.setRed(currPixel.getRed() - 1);
+                messagePixel = messagePixels[row][col];
+                if (messagePixel.colorDistance(Color.BLACK) < 50)
+                {
+                    currPixel.setRed(currPixel.getRed() + 1);
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
+    }
+
+    /**
+     * Method to decode a message hidden in the
+     * red value of the current picture
+     * @return the picture with the hidden message
+     */
+    public Picture decode()
+    {
+        Pixel[][] pixels = this.getPixels2D();
+        int height = this.getHeight();
+        int width = this.getWidth();
+        Pixel currPixel = null;
+        Pixel messagePixel = null;
+        Picture messagePicture = new Picture(height,width);
+        Pixel[][] messagePixels = messagePicture.getPixels2D();
+        int count = 0;
+        for (int row = 0; row < this.getHeight(); row++)
+        {
+            for (int col = 0; col < this.getWidth(); col++)
+            {
+                currPixel = pixels[row][col];
+                messagePixel = messagePixels[row][col];
+                if (currPixel.getRed() % 2 == 1)
+                {
+                    messagePixel.setColor(Color.BLACK);
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
+        return messagePicture;
+    }
+
+    /**
+     * Method to return the count of the number
+     * of pixels with a red value greater than
+     * the passed value
+     * @param value the value to compare to
+     * @return the count
+     */
+    public int getCountRedOverValue(int value)
+    {
+        int count = 0;
+        Pixel[][] pixels = this.getPixels2D();
+        Pixel currPixel = null;
+        for (int row = 0; row < pixels.length; row++)
+        {
+            for (int col = 0; col < pixels[0].length; col++)
+            {
+                currPixel = pixels[row][col];
+                if (currPixel.getRed() > value)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /** Method to set the red in the top half of the picture
+     * to half the original value */
+    public void setRedToHalfValueInTopHalf()
+    {
+        Pixel[][] pixels = this.getPixels2D();
+        Pixel currPixel = null;
+        for (int row = 0; row < pixels.length/2; row++)
+        {
+            for (int col = 0; col < pixels[0].length; col++)
+            {
+                currPixel = pixels[row][col];
+                currPixel.setRed(currPixel.getRed() / 2);
+            }
+        }
+    }
+
+    /** Method to clear the blue (set to 0) if it is over the passed
+     * value
+     * @param value the value to compare to
+     */
+    public void clearBlueOverValue(int value)
+    {
+        Pixel[][] pixels = this.getPixels2D();
+        Pixel currPixel = null;
+        for (int row = 0; row < pixels.length; row++)
+        {
+            for (int col = 0; col < pixels[0].length; col++)
+            {
+                currPixel = pixels[row][col];
+                if (currPixel.getBlue() > value)
+                {
+                    currPixel.setBlue(0);
+                }
+            }
+        }
+    }
+
+    /** Method to return the average value for the specified column
+     * @param col the column index to get the average from
+     * @return the average of the values in that column
+     */
+    public int[] getAverageForColumn(int col)
+    {
+        Pixel[][] pixels = this.getPixels2D();
+        Pixel currPixel = null;
+        int[] averageArray = new int[pixels[col].length];
+        int total = 0;
+
+        for (int row = 0; row < pixels.length; row++)
+        {
+            currPixel = pixels[row][col];
+            total = currPixel.getRed() +
+                    currPixel.getGreen() +
+                    currPixel.getBlue();
+            averageArray[row] = total / 3;
+        }
+        return averageArray;
+    }
   
   /* Main method for testing - each class in Java can have a main 
    * method 

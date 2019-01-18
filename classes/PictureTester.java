@@ -122,6 +122,11 @@ public class PictureTester
       seagull.mirrorGull();
       seagull.explore();
   }
+
+  public static void testEncodeAndDecode()
+  {
+
+  }
   
   /** Main method for testing.  Every class can have a main
     * method in Java */
@@ -143,14 +148,14 @@ public class PictureTester
     //testMirrorDiagonal();
     //testMirrorTemple();
     //testMirrorArms();
-    testMirrorGull();
+    //testMirrorGull();
     //testMirrorDiagonal();
     //testCollage();
     //testCopy();
     //testEdgeDetection();
     //testEdgeDetection2();
     //testChromakey();
-    //testEncodeAndDecode();
+    testEncodeAndDecode();
     //testGetCountRedOverValue(250);
     //testSetRedToHalfValueInTopHalf();
     //testClearBlueOverValue(200);
